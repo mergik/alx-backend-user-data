@@ -6,11 +6,11 @@ from models.base import Base
 
 
 class User(Base):
-    """ User class
-    """
+    """ User class """
 
     def __init__(self, *args: list, **kwargs: dict):
-        """ Initialize a User instance
+        """
+        Initialize User instance
         """
         super().__init__(*args, **kwargs)
         self.email = kwargs.get('email')
@@ -20,21 +20,20 @@ class User(Base):
 
     @property
     def password(self) -> str:
-        """ Getter of the password
-        """
+        """ Password getter for private variable """
         return self._password
 
     @password.setter
     def password(self, pwd: str):
-        """ Setter of a new password: encrypt in SHA256
-        """
+        """ Password setter to encrypt in SHA256 """
         if pwd is None or type(pwd) is not str:
             self._password = None
         else:
             self._password = hashlib.sha256(pwd.encode()).hexdigest().lower()
 
     def is_valid_password(self, pwd: str) -> bool:
-        """ Validate a password
+        """
+        Return True if password validated and user exists
         """
         if pwd is None or type(pwd) is not str:
             return False
@@ -44,16 +43,15 @@ class User(Base):
         return hashlib.sha256(pwd_e).hexdigest().lower() == self.password
 
     def display_name(self) -> str:
-        """ Display User name based on email/first_name/last_name
-        """
+        """ Display User name based on email/first_name/last_name """
         if self.email is None and self.first_name is None \
                 and self.last_name is None:
-            return ""
+            return ("")
         if self.first_name is None and self.last_name is None:
-            return "{}".format(self.email)
+            return ("{}".format(self.email))
         if self.last_name is None:
-            return "{}".format(self.first_name)
+            return ("{}".format(self.first_name))
         if self.first_name is None:
-            return "{}".format(self.last_name)
+            return ("{}".format(self.last_name))
         else:
-            return "{} {}".format(self.first_name, self.last_name)
+            return ("{} {}".format(self.first_name, self.last_name))
